@@ -214,7 +214,7 @@ class TestNoiseSensorRecord:
 
     def test_record_reads_correct_number_of_samples(self, noise_sensor, mock_sounddevice):
         """Test that _record() reads the correct number of samples."""
-        mock_sd, mock_stream = mock_sounddevice
+        _mock_sd, mock_stream = mock_sounddevice
 
         # Mock the stream.read to return data
         expected_samples = int(DEFAULT_SAMPLE_RATE * DEFAULT_DURATION)
@@ -233,7 +233,7 @@ class TestNoiseSensorRecord:
 
     def test_record_handles_overflow(self, noise_sensor, mock_sounddevice):
         """Test that _record() handles audio overflow correctly."""
-        mock_sd, mock_stream = mock_sounddevice
+        _mock_sd, mock_stream = mock_sounddevice
 
         expected_samples = int(DEFAULT_SAMPLE_RATE * DEFAULT_DURATION)
         mock_data = np.random.randn(expected_samples, 1).astype(np.float32)
@@ -250,13 +250,13 @@ class TestNoiseSensorRecord:
 class TestNoiseSensorEdgeCases:
     """Tests for edge cases and error conditions."""
 
-    def test_init_with_zero_duration(self, mock_sounddevice):  # noqa: F841
+    def test_init_with_zero_duration(self, mock_sounddevice):
         """Test initialization with zero duration."""
         sensor = NoiseSensor(duration=0)
         assert sensor.duration == 0
         sensor.close()
 
-    def test_init_with_very_high_sample_rate(self, mock_sounddevice):  # noqa: F841
+    def test_init_with_very_high_sample_rate(self, mock_sounddevice):
         """Test initialization with very high sample rate."""
         sensor = NoiseSensor(sample_rate=192_000)
         assert sensor.sample_rate == 192_000

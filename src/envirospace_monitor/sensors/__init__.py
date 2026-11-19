@@ -15,12 +15,12 @@ from envirospace_monitor.sensors.pressure import PressureSensor
 from envirospace_monitor.sensors.temperature import TemperatureSensor
 
 __all__ = [
-    "Sensor",
-    "SensorReading",
-    "SensorType",
     "HumiditySensor",
     "LightSensor",
     "NoiseSensor",
     "PressureSensor",
+    "Sensor",
+    "SensorReading",
+    "SensorType",
     "TemperatureSensor"
 ]
