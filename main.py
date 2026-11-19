@@ -4,6 +4,10 @@
 
 import sys
 import time
+import datetime as dt
+
+
+from envirospace_monitor import SensorReading, SensorType
 
 try:
     # Transitional fix for breaking change in LTR559
@@ -16,7 +20,12 @@ except ImportError:
 try:
     while True:
         light = ltr559.get_lux()
-        print(f"Light: {light} Lux")
+        light_reading = SensorReading(
+            timestamp=dt.datetime.now(dt.UTC),
+            sensor_type=SensorType.LIGHT,
+            value=light
+        )
+        print(f"Light: {light_reading.value} {light_reading.unit}")
         time.sleep(1)
 
 except KeyboardInterrupt:
