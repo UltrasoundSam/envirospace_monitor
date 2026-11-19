@@ -5,6 +5,7 @@ sensor device.
 '''
 
 import datetime as dt
+
 from ltr559 import LTR559
 
 from envirospace_monitor.sensors.base import Sensor, SensorReading, SensorType
@@ -29,7 +30,7 @@ class LightSensor(Sensor):
         """Read the current light intensity in lux."""
         lux = self._ltr559.get_lux()
         return SensorReading(
-            timestamp=dt.datetime.now(dt.timezone.utc),
+            timestamp=dt.datetime.now(dt.UTC),
             sensor_type=self.sensor_type,
             value=lux
         )

@@ -11,6 +11,7 @@ from envirospace_monitor.sensors import (
     LightSensor,
     PressureSensor,
     TemperatureSensor,
+    NoiseSensor,
 )
 
 DELAY = 5   # Delay between readings in seconds
@@ -19,12 +20,14 @@ DELAY = 5   # Delay between readings in seconds
 bme280 = BME280()
 
 # Import sensor objects
+noise_sensor = NoiseSensor()
 light_sensor = LightSensor()
 temperature_sensor = TemperatureSensor(bme280)
 pressure_sensor = PressureSensor(bme280)
 humidity_sensor = HumiditySensor(bme280)
 
 sensor_collection = (
+    noise_sensor,
     light_sensor,
     temperature_sensor,
     pressure_sensor,

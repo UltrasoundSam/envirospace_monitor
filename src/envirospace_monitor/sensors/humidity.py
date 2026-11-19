@@ -5,6 +5,7 @@ sensor device.
 '''
 
 import datetime as dt
+
 from bme280 import BME280
 
 from envirospace_monitor.sensors.base import Sensor, SensorReading, SensorType
@@ -23,7 +24,7 @@ class HumiditySensor(Sensor):
     def read(self) -> SensorReading:
         """Read the current relative humidity percentage."""
         return SensorReading(
-            timestamp=dt.datetime.now(dt.timezone.utc),
+            timestamp=dt.datetime.now(dt.UTC),
             sensor_type=self.sensor_type,
             value=self._sensor.get_humidity()
         )
