@@ -1,31 +1,42 @@
 '''Orchestrator for the data pipeline.'''
 
 # Initially, I want to just be able to capture values
-
-import datetime as dt
 import sys
 import time
 
-from envirospace_monitor import SensorReading, SensorType
+from bme280 import BME280
 
-try:
-    # Transitional fix for breaking change in LTR559
-    from ltr559 import LTR559
-    ltr559 = LTR559()
-except ImportError:
-    import ltr559
+from envirospace_monitor.sensors import (
+    HumiditySensor,
+    LightSensor,
+    PressureSensor,
+    TemperatureSensor,
+)
 
+DELAY = 5   # Delay between readings in seconds
+
+# Import BME280 sensor from board
+bme280 = BME280()
+
+# Import sensor objects
+light_sensor = LightSensor()
+temperature_sensor = TemperatureSensor(bme280)
+pressure_sensor = PressureSensor(bme280)
+humidity_sensor = HumiditySensor(bme280)
+
+sensor_collection = (
+    light_sensor,
+    temperature_sensor,
+    pressure_sensor,
+    humidity_sensor
+)
 
 try:
     while True:
-        light = ltr559.get_lux()
-        light_reading = SensorReading(
-            timestamp=dt.datetime.now(dt.UTC),
-            sensor_type=SensorType.LIGHT,
-            value=light
-        )
-        print(light_reading)
-        time.sleep(1)
+        readings = [sensor.read() for sensor in sensor_collection]
+        for reading in readings:
+            print(reading)
+        time.sleep(DELAY)
 
 except KeyboardInterrupt:
     print("Exiting...")
