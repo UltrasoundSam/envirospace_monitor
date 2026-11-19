@@ -27,12 +27,29 @@ class NoiseSensor(Sensor):
     """
     def __init__(self,
                  sample_rate: int = 16_000,
-                 duration: float = 0.5,
+                 duration: float = 2.0,
                  freq_range: tuple[int, int] = (FREQ_LOW, FREQ_HIGH)):
         super().__init__(SensorType.NOISE)
         self.duration = duration
         self.sample_rate = sample_rate
         self.freq_range = freq_range
+
+        # Create audio stream object
+        self._stream = sd.InputStream(
+            device='adau7002',
+            samplerate=self.sample_rate,
+            channels=1,
+            dtype='float32'
+        )
+
+        # Start stream and sleep for 2 seconds to get rid of transient
+        self._stream.start()
+        sd.sleep(2000)
+
+    def close(self) -> None:
+        '''Closes off Stream when destroy class'''
+        self._stream.stop()
+        self._stream.close()
 
     def read(self) -> SensorReading:
         """Read the mean amplitude of frequencies in the configured range."""
@@ -43,6 +60,10 @@ class NoiseSensor(Sensor):
 
         # Record data from microphone
         data = self._record()
+
+        # Remove any initial values and then the DC offset
+        data = data[1000:]
+        data -= np.mean(data)
 
         # Calculates FFT
         npow2 = int(np.ceil(np.log2(len(data))))
@@ -61,13 +82,14 @@ class NoiseSensor(Sensor):
             value=mean_volume
         )
 
-    def _record(self) -> npt.NDArray[np.float64]:
+    def _record(self) -> npt.NDArray[np.float32]:
         '''Records audio from sound device for analysis'''
-        rec = sd.rec(
-            int(self.duration * self.sample_rate),
-            device="adau7002",
-            samplerate=self.sample_rate,
-            channels=1,
-            blocking=True,
-            dtype='float64')
-        return np.squeeze(rec)
+
+        # Calculate how many samples to read and get them
+        samples = int(self.duration * self.sample_rate)
+        data, overflowed = self._stream.read(samples)
+
+        # if overflowed:
+        #     print("Audio overflow detected")
+
+        return np.squeeze(data)
