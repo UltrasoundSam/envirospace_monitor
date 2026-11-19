@@ -2,10 +2,9 @@
 
 # Initially, I want to just be able to capture values
 
+import datetime as dt
 import sys
 import time
-import datetime as dt
-
 
 from envirospace_monitor import SensorReading, SensorType
 
@@ -25,7 +24,7 @@ try:
             sensor_type=SensorType.LIGHT,
             value=light
         )
-        print(f"Light: {light_reading.value} {light_reading.unit}")
+        print(light_reading)
         time.sleep(1)
 
 except KeyboardInterrupt:

@@ -38,6 +38,9 @@ class SensorReading:
         if self.unit is None:
             self.unit = self._UNIT_MAP.get(self.sensor_type, "unknown")
 
+    def __str__(self) -> str:
+        return f"{self.timestamp.isoformat()} - {self.sensor_type.value.capitalize()}: {self.value} {self.unit}"
+
     def to_dict(self) -> dict:
         """Convert the SensorReading to a dictionary."""
         return {
