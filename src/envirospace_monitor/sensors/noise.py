@@ -53,6 +53,10 @@ class NoiseSensor(Sensor):
 
     def read(self) -> SensorReading:
         """Read the mean amplitude of frequencies in the configured range."""
+        # Validate frequency range
+        if self.freq_range[0] > self.freq_range[1]:
+            raise ValueError("Frequency range low must be less than or equal to high")
+        
         # Checks that request is fully Nyquisted
         nyquist = self.sample_rate // 2
         if self.freq_range[0] > nyquist or self.freq_range[1] > nyquist:
