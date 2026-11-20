@@ -1,6 +1,6 @@
 [project]
 name = "envirospace-monitor"
-version = "0.3.2"
+version = "0.3.4"
 description = "Repo for helping to capture environmental data to help with INC Lab: https://www.yorksj.ac.uk/research/institute-for-social-justice/research-clusters/neurodiversity-and-learning-disabilities/inc-lab/"
 readme = "README.md"
 requires-python = ">=3.13"
