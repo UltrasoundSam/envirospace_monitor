@@ -6,21 +6,19 @@ import os
 import sys
 import time
 
-from dotenv import load_dotenv
-
 import paho.mqtt.client as mqtt
-
 from bme280 import BME280
+from dotenv import load_dotenv
 
 from envirospace_monitor.sensors import (
     HumiditySensor,
     LightSensor,
+    NoiseSensor,
     PressureSensor,
     TemperatureSensor,
-    NoiseSensor,
 )
 
-DELAY = 5   # Delay between readings in seconds
+DELAY = 60   # Delay between readings in seconds
 
 # Load environment variables from .env file
 load_dotenv()
@@ -51,7 +49,10 @@ sensor_collection = (
 )
 
 # MQTT Client setup
-mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client(
+    callback_api_version=mqtt.CallbackAPIVersion.VERSION2,
+    protocol=mqtt.MQTTv311
+)
 mqtt_client.tls_set()  # Enable TLS for secure connection
 if MQTT_USERNAME and MQTT_PASSWORD:
     mqtt_client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
