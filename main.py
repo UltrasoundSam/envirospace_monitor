@@ -25,7 +25,7 @@ load_dotenv()
 
 # MQTT Configuration (from environment variables)
 MQTT_BROKER = os.getenv("MQTT_BROKER")
-MQTT_PORT = int(os.getenv("MQTT_PORT")) # type: ignore
+MQTT_PORT = int(os.getenv("MQTT_PORT", "8883"))
 MQTT_BASE_TOPIC = os.getenv("MQTT_BASE_TOPIC")
 MQTT_USERNAME = os.getenv("MQTT_USERNAME")
 MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
