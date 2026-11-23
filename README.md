@@ -85,12 +85,12 @@ The system currently measures:
          │
          ▼
 ┌─────────────────┐
-│ Local Storage   │
+│ Publish via MQTT│
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
-│ Data Processing │
+│ Database Ingest │
 └────────┬────────┘
          │
          ▼
@@ -114,7 +114,7 @@ envirospace-monitor/
 │   ├── processing/
 │   └── communication/
 │
-├── config/
+├── debug_data/
 │
 ├── data/
 │
@@ -122,11 +122,13 @@ envirospace-monitor/
 │
 ├── docs/
 │
-├── scripts/
+├── deploy/
 │
 ├── pyproject.toml
 │
-└── README.md
+├── README.md
+│
+└── main.py
 ```
 
 ## Installation
@@ -134,7 +136,7 @@ envirospace-monitor/
 ### Prerequisites
 
 - Raspberry Pi OS
-- Python 3.10+
+- Python 3.13+
 
 ### Clone the Repository
 
