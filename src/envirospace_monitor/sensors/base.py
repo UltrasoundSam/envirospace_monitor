@@ -63,7 +63,7 @@ class SensorReading:
         """Convert the reading to a JSON-serializable dictionary."""
         return {
             "sensor_type": self.sensor_type.value,
-            "value": self.value,
+            "value": float(self.value),
             "unit": self.unit,
             "timestamp": self.timestamp.isoformat()
         }

@@ -1,0 +1,23 @@
+[Unit]
+Description=EnviroSpace Monitor
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=sam
+WorkingDirectory=/home/sam/git/envirospace_monitor
+
+ExecStart=/home/sam/.local/bin/uv run main.py
+
+Restart=on-failure
+RestartSec=30
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+
